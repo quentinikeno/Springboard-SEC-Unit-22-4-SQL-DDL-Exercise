@@ -10,21 +10,22 @@ CREATE TABLE teams (
     rank INTEGER NOT NULL
 );
 
-CREATE TABLE goals (
+
+CREATE TABLE referees (
     id SERIAL PRIMARY KEY,
-    player_id INTEGER NOT NULL REFERENCES players ON DELETE SET NULL,
-    match_id INTEGER NOT NULL REFERENCES matches ON DELETE SET NULL
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE season (
+    id SERIAL PRIMARY KEY,
+    start_date DATE NOT NULL,
+    end_data DATE NOT NULL
 );
 
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     name TEXT UNIQUE NOT NULL,
     team_id INTEGER NOT NULL REFERENCES teams ON DELETE SET NULL
-);
-
-CREATE TABLE referees (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE matches (
@@ -35,8 +36,9 @@ CREATE TABLE matches (
     referee_id INTEGER NOT NULL REFERENCES referees ON DELETE SET NULL
 );
 
-CREATE TABLE season (
+CREATE TABLE goals (
     id SERIAL PRIMARY KEY,
-    start_date DATE NOT NULL,
-    end_data DATE NOT NULL
+    player_id INTEGER NOT NULL REFERENCES players ON DELETE SET NULL,
+    match_id INTEGER NOT NULL REFERENCES matches ON DELETE SET NULL
 );
+
