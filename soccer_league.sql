@@ -10,7 +10,6 @@ CREATE TABLE teams (
     rank INTEGER NOT NULL
 );
 
-
 CREATE TABLE referees (
     id SERIAL PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
@@ -19,7 +18,7 @@ CREATE TABLE referees (
 CREATE TABLE season (
     id SERIAL PRIMARY KEY,
     start_date DATE NOT NULL,
-    end_data DATE NOT NULL
+    end_date DATE NOT NULL
 );
 
 CREATE TABLE players (
@@ -31,7 +30,7 @@ CREATE TABLE players (
 CREATE TABLE matches (
     id SERIAL PRIMARY KEY,
     home_team_id INTEGER NOT NULL REFERENCES teams ON DELETE SET NULL,
-    away_team_id INTEGER NOT NULL REFERENCES teams ON DELETE SET NULL,
+    away_team_id INTEGER NOT NULL REFERENCES teams ON DELETE SET NULL CHECK (away_team_id <> home_team_id),
     season_id INTEGER NOT NULL REFERENCES season ON DELETE SET NULL,
     referee_id INTEGER NOT NULL REFERENCES referees ON DELETE SET NULL
 );
