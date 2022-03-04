@@ -1,53 +1,33 @@
 ﻿-- Part One: Medical Center
 
-CREATE TABLE "Doctors" (
-    "DoctorID" int   NOT NULL,
-    "FirstName" Text   NOT NULL,
-    "LastName" Text   NOT NULL,
-    CONSTRAINT "pk_Doctors" PRIMARY KEY (
-        "DoctorID"
-     )
+DROP DATABASE IF EXISTS medical_center;
+CREATE DATABASE medical_center;
+\c medical_center;
+
+CREATE TABLE doctors (
+    id SERIAL PRIMARY KEY,
+    FirstName TEXT NOT NULL,
+    LastName TEXT NOT NULL
 );
 
-CREATE TABLE "Patients" (
-    "PatientID" int   NOT NULL,
-    "FirstName" Text   NOT NULL,
-    "LastName" Text   NOT NULL,
-    CONSTRAINT "pk_Patients" PRIMARY KEY (
-        "PatientID"
-     )
+CREATE TABLE patients (
+    id SERIAL PRIMARY KEY,
+    FirstName Text NOT NULL,
+    LastName Text NOT NULL
 );
 
-CREATE TABLE "Doctors_Patients" (
-    "DoctorID" int   NOT NULL,
-    "PatientID" int   NOT NULL
+CREATE TABLE doctors_patients (
+    DoctorID INTEGER NOT NULL REFERENCES doctors,
+    PatientID INTEGER NOT NULL REFERENCES patients
 );
 
-CREATE TABLE "Diseases" (
-    "DiseaseID" int   NOT NULL,
-    "Name" Text   NOT NULL,
-    CONSTRAINT "pk_Diseases" PRIMARY KEY (
-        "DiseaseID"
-     ),
-    CONSTRAINT "uc_Diseases_Name" UNIQUE (
-        "Name"
-    )
+CREATE TABLE diseases (
+    id SERIAL PRIMARY KEY,
+    Name Text NOT NULL UNIQUE
 );
 
-CREATE TABLE "Diagnosis" (
-    "PatientID" int   NOT NULL,
-    "DiseaseID" int   NOT NULL
+CREATE TABLE diagnosis (
+    PatientID INTEGER NOT NULL REFERENCES patients,
+    DiseaseID INTEGER NOT NULL REFERENCES diseases
 );
-
-ALTER TABLE "Doctors_Patients" ADD CONSTRAINT "fk_Doctors_Patients_DoctorID" FOREIGN KEY("DoctorID")
-REFERENCES "Doctors" ("DoctorID");
-
-ALTER TABLE "Doctors_Patients" ADD CONSTRAINT "fk_Doctors_Patients_PatientID" FOREIGN KEY("PatientID")
-REFERENCES "Patients" ("PatientID");
-
-ALTER TABLE "Diagnosis" ADD CONSTRAINT "fk_Diagnosis_PatientID" FOREIGN KEY("PatientID")
-REFERENCES "Patients" ("PatientID");
-
-ALTER TABLE "Diagnosis" ADD CONSTRAINT "fk_Diagnosis_DiseaseID" FOREIGN KEY("DiseaseID")
-REFERENCES "Diseases" ("DiseaseID");
 
